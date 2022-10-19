@@ -24,6 +24,7 @@ class SmallText extends StatelessWidget {
         fontSize: size == 0 ? Dimensions.font12 : size,
         fontFamily: 'Roboto',
         height: height,
+        // overflow: TextOverflow.ellipsis,
       ),
     );
   }

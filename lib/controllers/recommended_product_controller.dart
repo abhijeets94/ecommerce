@@ -17,7 +17,6 @@ class RecommendedProductController extends GetxController {
     Response response =
         await recommendedProductRepo.getRecommendedProductList();
     if (response.statusCode == 200) {
-      print("got products recc");
       _recommendedProductList = [];
       // here we need to build a "model" since we need data in list which we can get from JSON
       // once the data is converted in JSON, it will be easy to handle them
