@@ -7,7 +7,7 @@ import 'package:food_delivery/models/products_model.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
 
-class CartController extends GetxService {
+class CartController extends GetxController {
   final CartRepo cartRepo;
   CartController({required this.cartRepo});
   Map<int, CartModel> _items = {};
@@ -26,7 +26,8 @@ class CartController extends GetxService {
             quantity: value.quantity! + quantity,
             // quantity: value.quantity! + (quantity - value.quantity!),
             isExist: true,
-            time: DateTime.now().toString());
+            time: DateTime.now().toString(),
+            product: product);
       });
       if (totalQuantity <= 0) {
         _items.remove(product.id!);
@@ -37,12 +38,12 @@ class CartController extends GetxService {
           colorText: Colors.white,
         );
       } else {
-        Get.snackbar(
-          "Congratulations!!",
-          "Total $totalQuantity ${product.name} have been added to your cart",
-          backgroundColor: AppColors.mainColor,
-          colorText: Colors.white,
-        );
+        // Get.snackbar(
+        //   "Congratulations!!",
+        //   "Total $totalQuantity ${product.name} have been added to your cart",
+        //   backgroundColor: AppColors.mainColor,
+        //   colorText: Colors.white,
+        // );
       }
     } else {
       if (quantity > 0) {
@@ -54,13 +55,15 @@ class CartController extends GetxService {
               img: product.img,
               quantity: quantity,
               isExist: true,
-              time: DateTime.now().toString());
+              time: DateTime.now().toString(),
+              product: product);
         });
       } else {
-        Get.snackbar("No items added", "",
-            backgroundColor: AppColors.mainColor, colorText: Colors.white);
+        // Get.snackbar("No items added", "",
+        //     backgroundColor: AppColors.mainColor, colorText: Colors.white);
       }
     }
+    update();
   }
 
   existInCart(ProductModel product) {
@@ -80,5 +83,20 @@ class CartController extends GetxService {
       });
     }
     return quantity;
+  }
+
+  int get totalItems {
+    var totalQuantity = 0;
+    _items.forEach((key, value) {
+      totalQuantity += value.quantity!;
+    });
+    return totalQuantity;
+  }
+
+  List<CartModel> get getItems {
+    return _items.entries.map((e) {
+      debugPrint("Items entries map e : ${e.value}");
+      return e.value;
+    }).toList();
   }
 }

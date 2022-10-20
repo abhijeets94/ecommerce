@@ -1,3 +1,4 @@
+import 'package:food_delivery/pages/cart/cart_page.dart';
 import 'package:food_delivery/pages/food/popular_food_detail.dart';
 import 'package:food_delivery/pages/food/recommended_food_detail.dart';
 import 'package:food_delivery/pages/home/main_food_page.dart';
@@ -7,6 +8,7 @@ class RouteHelper {
   static const String initial = "/";
   static const String popularFood = "/popular-food";
   static const String recommendedFood = "/recommended-food";
+  static const String cartPage = "/cart-page";
 
   static String getInitial() => '$initial';
   static String getPopularFood(int pageId) => '$popularFood?pageId=$pageId';
@@ -17,7 +19,7 @@ class RouteHelper {
     GetPage(
       name: initial,
       page: () => MainFoodPage(),
-      transition: Transition.topLevel,
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: popularFood,
@@ -25,7 +27,7 @@ class RouteHelper {
         var pageId = Get.parameters['pageId'];
         return PopularFoodDetails(pageId: int.parse(pageId.toString()));
       },
-      transition: Transition.topLevel,
+      transition: Transition.downToUp,
     ),
     GetPage(
       name: recommendedFood,
@@ -35,7 +37,15 @@ class RouteHelper {
           pageId: int.parse(pageId.toString()),
         );
       },
-      transition: Transition.topLevel,
+      transition: Transition.leftToRightWithFade,
+    ),
+    GetPage(
+      name: cartPage,
+      page: () {
+        // var pageId = Get.parameters['pageId'];
+        return CartPage();
+      },
+      transition: Transition.rightToLeft,
     ),
   ];
 }

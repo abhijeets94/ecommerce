@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/data/repository/popular_product_repo.dart';
+import 'package:food_delivery/models/cart_model.dart';
 import 'package:food_delivery/models/products_model.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
@@ -50,6 +51,10 @@ class PopularProductController extends GetxController {
     if (_inCartItems + quantity < 0) {
       Get.snackbar("There are no items!!", "",
           backgroundColor: AppColors.mainColor, colorText: Colors.white);
+      if (_inCartItems > 0) {
+        _quantity = -_inCartItems;
+        return _quantity;
+      }
       return 0;
     } else if (_inCartItems + quantity > 20) {
       Get.snackbar("Maximum limit is 20", "",
@@ -78,7 +83,6 @@ class PopularProductController extends GetxController {
   }
 
   void addItem(ProductModel product) {
-    // if (quantity > 0) {
     _cart.addItem(product, _quantity);
     _quantity = 0;
     _inCartItems = _cart.getQuantity(product);
@@ -86,10 +90,12 @@ class PopularProductController extends GetxController {
       debugPrint("id : ${value.id}, quantity : ${value.quantity}");
     });
 
-    // }
-    // else {
-    //   Get.snackbar("Item count", "You should atleast add 1 item into the cart!",
-    //       backgroundColor: AppColors.mainColor, colorText: Colors.white);
-    // }
+    update();
+  }
+
+  int get totalItems => _cart.totalItems;
+
+  List<CartModel> get getItems {
+    return _cart.getItems;
   }
 }
